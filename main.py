@@ -3,10 +3,7 @@ import operator
 import re
 import traceback
 import spacy
-try:
-    import enchant
-except ImportError:
-    os.system("pip install PyEnchant")
+import enchant
 
 
 class rinDerived():
@@ -14,10 +11,10 @@ class rinDerived():
     def seed_name(self, rname):
         try:
             wrdType = {"ADJ": "adjective", "ADP": "adposition", "ADV": "adverb", "AUX": "auxiliary verb",
-                       "CONJ": "coordinating conjunction", "DET": "determiner", "INTJ": "interjection", "NOUN": "noun",
-                       "NUM": "numeral", "PART": "particle", "PRON": "pronoun", "PROPN": "proper noun",
-                       "PUNCT": "punctuation", "SCONJ": "subordinating conjunction", "SYM": "symbol",
-                       "VERB": "verb", "X": "other"}
+            "CONJ": "coordinating conjunction", "DET": "determiner", "INTJ": "interjection", "NOUN": "noun",
+            "NUM": "numeral", "PART": "particle", "PRON": "pronoun", "PROPN": "proper noun",
+            "PUNCT": "punctuation", "SCONJ": "subordinating conjunction", "SYM": "symbol",
+            "VERB": "verb","X": "other"}
             nlp = spacy.load("en_core_web_sm")
             wordPredict = enchant.Dict("en_US")
             foundWords = []
@@ -26,7 +23,7 @@ class rinDerived():
             finalWords = {}
             tags = []
             name = rname.replace("_", " ")
-            # If user has a capitals in name split it up
+            # If user has a capitals in name split it up 
             r1 = re.findall(r"([A-z][a-z]+)", name)
             try:
                 if r1[1]:
@@ -47,6 +44,7 @@ class rinDerived():
                     suggestWords.append(wordPredict.suggest(decon))
                 for decon in foundWords:
                     suggestWords.append(wordPredict.suggest(decon))
+
 
             # Take suggested words and put into percentage cal
             for userWord in suggestWords:
@@ -89,29 +87,30 @@ class rinDerived():
                         except TypeError:
                             pass
 
-            sorted_dict = dict(
-                sorted(finalWords.items(), key=operator.itemgetter(0)))
+            sorted_dict = dict(sorted(finalWords.items(), key=operator.itemgetter(0)))
             # print(foundWords, derivedWords, suggestWords, finalWords)
             try:
                 if len(finalWords[next(iter(sorted_dict))]) >= 3:
                     if int(next(iter(sorted_dict))) <= 80:
                         nameWeWant = ""
-                        weWant = {"noun": True, "pronoun": True,
-                                  "adverb": True, "adjective": True}
+                        weWant = {"noun" : True, "pronoun": True, "adverb": True, "adjective": True}
                         for namesWeHave in finalWords.keys():
-                            namesWeHAve = (wrdType[finalWords[namesWeHave][2]])
-                            try:
-                                if weWant[namesWeHAve]:
-                                    nameWeWant = finalWords[namesWeHave][1]
-                            except KeyError:
-                                pass
-
+                                namesWeHAve = (wrdType[finalWords[namesWeHave][2]])
+                                try:
+                                    if weWant[namesWeHAve]:
+                                        if weWant[namesWeHAve] >= 4:
+                                            nameWeWant = finalWords[namesWeHave][1]
+                                except KeyError:
+                                    pass
+                                
                         if nameWeWant:
                             return (f"I would call {rname}: {nameWeWant} {sorted_dict}")
                         else:
-                            return (f"I dont have a good name with want {rname}: {rname} {sorted_dict} ")
+                            return (f"I dont have a good name for {rname} with 'want': {rname} {sorted_dict} ")
                     else:
                         return (f"I dont have a good name for {rname}: {rname} {sorted_dict} ")
+                else:
+                    return (f"I dont have a good name for {rname}: {rname} {sorted_dict} ")
             except Exception as e:
                 return (f"I dont have a good name for {rname}: {rname} {sorted_dict} {e}")
 
