@@ -12,7 +12,7 @@ class rinDerived():
         try:
             wrdType = {"ADJ": "adjective", "ADP": "adposition", "ADV": "adverb", "AUX": "auxiliary verb",
             "CONJ": "coordinating conjunction", "DET": "determiner", "INTJ": "interjection", "NOUN": "noun",
-            "NUM": "numeral", "PART": "particle", "PRON": "pronoun", "PROPN": "proper noun",
+            "NUM": "numeral", "PART": "particle", "PRON": "pronoun", "PROPN": "propernoun",
             "PUNCT": "punctuation", "SCONJ": "subordinating conjunction", "SYM": "symbol",
             "VERB": "verb","X": "other"}
             nlp = spacy.load("en_core_web_sm")
@@ -23,6 +23,26 @@ class rinDerived():
             finalWords = {}
             tags = []
             name = rname.replace("_", " ")
+            nameWeWant = ""
+
+            revName = name[::-1]
+            token1 = []
+            token2 = []
+            for t1 in name:
+                try:
+                    token1.append(token1[-1] + t1)
+                except IndexError:
+                    token1.append(t1)
+
+            for t2 in revName:
+                try:
+                    token2.append(token2[-1] + t2)
+                except IndexError:
+                    token2.append(t2)
+            
+            for rev in token2:
+                token1.append(rev[::-1])
+
             # If user has a capitals in name split it up 
             r1 = re.findall(r"([A-z][a-z]+)", name)
             try:
@@ -31,12 +51,12 @@ class rinDerived():
                         suggestWords.append(Fragname)
             except IndexError:
                 # User doesn't have capitals now looking for other names in name
-                for namer in name:
+                for namer in token1:
                     try:
                         if wordPredict.check(derivedWords[-1]) and len(derivedWords[-1]) >= 3:
                             foundWords.append(derivedWords[-1])
                             del derivedWords[:]
-                        derivedWords.append(derivedWords[-1] + namer)
+                        derivedWords.append(namer)
                     except IndexError:
                         derivedWords.append(namer)
 
@@ -88,34 +108,33 @@ class rinDerived():
                             pass
 
             sorted_dict = dict(sorted(finalWords.items(), key=operator.itemgetter(0)))
-            # print(foundWords, derivedWords, suggestWords, finalWords)
+            print(sorted_dict)
             try:
                 if len(finalWords[next(iter(sorted_dict))]) >= 3:
-                    if int(next(iter(sorted_dict))) <= 80:
-                        nameWeWant = ""
-                        weWant = {"noun" : True, "pronoun": True, "adverb": True, "adjective": True}
-                        for namesWeHave in finalWords.keys():
-                                namesWeHAve = (wrdType[finalWords[namesWeHave][2]])
-                                try:
-                                    if weWant[namesWeHAve]:
-                                        if weWant[namesWeHAve] >= 4:
-                                            nameWeWant = finalWords[namesWeHave][1]
-                                except KeyError:
-                                    pass
+                    vaVl = int(next(iter(sorted_dict))) 
+                    if vaVl <= 76:
+                        weWant = {"noun" : True, "pronoun": True, "adverb": True, "adjective": True, "propernoun": True}
+                        for namesWeHave in sorted_dict.keys():
+                            namesWeHAvep2 = (wrdType[finalWords[namesWeHave][2]])
+                            try:
+                                if weWant[namesWeHAvep2] and nameWeWant == "" and len(finalWords[namesWeHave][1]) >= 3 and namesWeHAvep2 != "bycake":
+                                    nameWeWant = finalWords[namesWeHave][1]
+                            except KeyError:
+                                pass
                                 
-                        if nameWeWant:
-                            return (f"I would call {rname}: {nameWeWant} {sorted_dict}")
+                        if nameWeWant and len(nameWeWant) >= 4:
+                            return nameWeWant
                         else:
-                            return (f"I dont have a good name for {rname} with 'want': {rname} {sorted_dict} ")
+                            return rname
                     else:
-                        return (f"I dont have a good name for {rname}: {rname} {sorted_dict} ")
+                        return rname
                 else:
-                    return (f"I dont have a good name for {rname}: {rname} {sorted_dict} ")
-            except Exception as e:
-                return (f"I dont have a good name for {rname}: {rname} {sorted_dict} {e}")
+                    return rname
+            except:
+                return rname
 
-        except Exception as er:
-            return ">>> Couldn't find a good name, using:" + name, er
+        except Exception as e:
+            return rname
 
 
 d = rinDerived()
