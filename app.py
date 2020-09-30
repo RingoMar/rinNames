@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, render_template, request, jsonify
-from main import rinDerived
+from names import rinDerived
 app = Flask(__name__)
 
 

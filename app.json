@@ -1,0 +1,7 @@
+{
+  "name": "Ringo Mar's Names",
+  "description": "Ringo Mar's name splitter",
+  "image": "heroku/python",
+  "repository": "https://github.com/RingoMar/rinNames",
+  "keywords": ["python", "flask" ]
+}
