@@ -1,2 +1,4 @@
+pyenchant
 spacy
-enchant
+spacy download en_core_web_sm
+flask

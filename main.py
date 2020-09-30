@@ -1,10 +1,8 @@
 import os
 import operator
 import re
-import traceback
 import spacy
 import enchant
-
 
 class rinDerived():
 
@@ -123,20 +121,15 @@ class rinDerived():
                                 pass
                                 
                         if nameWeWant and len(nameWeWant) >= 4:
-                            return nameWeWant
+                            return [nameWeWant, sorted_dict]
                         else:
-                            return rname
+                            return [rname, sorted_dict]
                     else:
-                        return rname
+                        return [rname, sorted_dict]
                 else:
-                    return rname
+                    return [rname, sorted_dict]
             except:
-                return rname
+                return [rname, sorted_dict]
 
         except Exception as e:
             return rname
-
-
-d = rinDerived()
-
-print(rinDerived().seed_name("GivingClaw"))

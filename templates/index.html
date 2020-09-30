@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+
+    <head>
+        <title>Ringo Mar Names Splitter</title>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"> </script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+            integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    </head>
+
+    <body class="bg-dark text-white">
+        <h5 class="d-flex justify-content-center">RingoMar's Name Splitter</h5>
+        <div class="container d-flex justify-content-md-around">
+            <div class="row">
+                <div class="col-12 p-4">
+                    <div class="bg-secondary card rounded text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">Enter your name (Case Sensitive)</h5>
+                            <div class="input-group mb-3">
+                                <input style="border: 1px solid #343a40;" class="form-control bg-dark text-white"
+                                    id="Uname" placeholder="Username" aria-label="Username"
+                                    aria-describedby="button-addon2">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-dark" id="mybutton" type="button"
+                                        id="button-addon2">Enter</button>
+                                </div>
+                                <div class="spinner-border text-success spinLoad" role="status" style="display: none;">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 p-4">
+                    <div class="bg-secondary card rounded text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">Output</h5>
+                            <ul class="list-group list-group-flush mink">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type=text/javascript>
+    $(function () {
+        $("#mybutton").click(function (event) {
+            $(".spinLoad").css("display", "block");
+
+            var getVal = $("#Uname").val();
+            $.getJSON(`/SomeFunction?monkaName=${getVal}`, function (data) {
+            $(".mink").append(
+                `<li class="bg-dark list-group-item">I would call you: ${data[0]}</li>`
+            );
+            $(".mink").append(
+                `<li class="bg-dark list-group-item">Predcition Data: ${JSON.stringify(
+                data[1]
+                )}</li>`
+            );
+            });
+            $(".spinLoad").css("display", "none");
+        });
+        });
+
+    </script>
+    </body>
+
+</html>
