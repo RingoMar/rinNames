@@ -2,7 +2,6 @@ import os
 import operator
 import re
 import spacy
-os.system("python -m spacy download en_core_web_sm")
 import enchant
 
 class rinDerived():
