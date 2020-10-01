@@ -1,4 +1,3 @@
-enchant 
-pyenchant
+pyenchant==1.6.6
 spacy
 Flask
