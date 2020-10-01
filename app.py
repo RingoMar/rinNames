@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, render_template, request, jsonify
 from names import rinDerived
+import os
 app = Flask(__name__)
 
 
@@ -14,5 +15,6 @@ def SomeFunction():
     return jsonify(rinDerived().seed_name(monkaName))
 
 
-if __name__ == '__main__':
-    app.run()
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
