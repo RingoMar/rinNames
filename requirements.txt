@@ -1,3 +1,2 @@
-python-enchant
 spacy
 Flask
