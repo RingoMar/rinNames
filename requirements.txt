@@ -1,3 +1,3 @@
-pyenchant==1.6.6
+python-enchan
 spacy
 Flask
