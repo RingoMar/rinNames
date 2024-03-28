@@ -3,7 +3,7 @@ name: Deploy Flask App to GitHub Pages
 on:
   push:
     branches:
-      - main  # Adjust this to match your main branch name
+      - gh-pages
 
 jobs:
   deploy:
@@ -33,4 +33,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build  # Adjust this to the directory where your Flask app is built
+          publish_dir: ./build
