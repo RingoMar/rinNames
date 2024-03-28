@@ -1,0 +1,36 @@
+name: Deploy Flask App to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Adjust this to match your main branch name
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt  # Adjust the requirements file name if necessary
+
+      - name: Build Flask App
+        run: |
+          export FLASK_APP=app.py  # Replace app.py with your Flask app file
+          export FLASK_ENV=production
+          flask build  # You need to define this command if your Flask app requires building
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build  # Adjust this to the directory where your Flask app is built
